@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/theme_provider.dart';
 
 class MobileHeader extends StatelessWidget {
   const MobileHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: theme.shadowColor.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -26,29 +31,40 @@ class MobileHeader extends StatelessWidget {
                 'Hello, Pizza Lover!',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey[600],
+                  color: colorScheme.onSurface.withOpacity(0.7),
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
+              Text(
                 'What would you like to eat?',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
             ],
           ),
           const Spacer(),
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, _) => IconButton(
+              icon: Icon(
+                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                color: colorScheme.onSurface,
+              ),
+              onPressed: () => themeProvider.toggleTheme(),
+            ),
+          ),
+          const SizedBox(width: 8),
           CircleAvatar(
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+            backgroundColor: colorScheme.primary.withOpacity(0.1),
             child: Icon(
               Icons.person_outline,
-              color: Theme.of(context).primaryColor,
+              color: colorScheme.primary,
             ),
           ),
         ],
       ),
     );
   }
-} 
+}

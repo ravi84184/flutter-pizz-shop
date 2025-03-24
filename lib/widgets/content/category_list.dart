@@ -10,6 +10,9 @@ class CategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,6 +21,7 @@ class CategoryList extends StatelessWidget {
           style: TextStyle(
             fontSize: isMobile ? 20 : 24,
             fontWeight: FontWeight.bold,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 20),
@@ -34,7 +38,6 @@ class CategoryList extends StatelessWidget {
                     onTap: () => products.filterByCategory(category.id),
                   ),
                 ],
-                
               ],
             ),
           ),
@@ -59,6 +62,9 @@ class _CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -69,12 +75,12 @@ class _CategoryItem extends StatelessWidget {
           vertical: 10,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).primaryColor : Colors.white,
+          color: isSelected ? colorScheme.primary : colorScheme.surfaceVariant,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             if (isSelected)
               BoxShadow(
-                color: Theme.of(context).primaryColor.withOpacity(0.3),
+                color: colorScheme.primary.withOpacity(0.3),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -87,8 +93,10 @@ class _CategoryItem extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-                fontWeight: FontWeight.w500,
+                color: isSelected
+                    ? colorScheme.onPrimary
+                    : colorScheme.onSurfaceVariant,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
             ),
           ],
@@ -96,4 +104,4 @@ class _CategoryItem extends StatelessWidget {
       ),
     );
   }
-} 
+}

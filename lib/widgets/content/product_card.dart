@@ -15,6 +15,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isSmallCard = constraints.maxWidth < 300;
@@ -22,11 +25,11 @@ class ProductCard extends StatelessWidget {
 
         return Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.cardColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: theme.shadowColor.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -42,16 +45,19 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildQuantityControls(
       BuildContext context, int quantity, bool isSmall) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.orange,
+        color: colorScheme.primary,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: const Icon(Icons.remove, color: Colors.white),
+            icon: Icon(Icons.remove, color: colorScheme.onPrimary),
             iconSize: isSmall ? 16 : 18,
             padding: EdgeInsets.all(isSmall ? 4 : 6),
             constraints: const BoxConstraints(),
@@ -75,14 +81,14 @@ class ProductCard extends StatelessWidget {
               quantity.toString(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 fontSize: isSmall ? 14 : 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.add, color: Colors.white),
+            icon: Icon(Icons.add, color: colorScheme.onPrimary),
             iconSize: isSmall ? 16 : 18,
             padding: EdgeInsets.all(isSmall ? 4 : 6),
             constraints: const BoxConstraints(),
@@ -99,6 +105,9 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _buildAddToCartButton(BuildContext context, bool isSmall) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Consumer<CartProvider>(
       builder: (context, cart, _) {
         final cartItem = cart.items[product.id];
@@ -110,8 +119,8 @@ class ProductCard extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => _addToCart(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
               padding: EdgeInsets.symmetric(
                 vertical: isSmall ? 6 : 12,
               ),
@@ -133,6 +142,8 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _buildMobileLayout(BuildContext context, BoxConstraints constraints) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final imageWidth = constraints.maxWidth * 0.35;
     final isSmall = constraints.maxWidth < 300;
 
@@ -164,9 +175,10 @@ class ProductCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         product.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -198,7 +210,7 @@ class ProductCard extends StatelessWidget {
                 Text(
                   product.description,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: colorScheme.onSurface.withOpacity(0.7),
                     fontSize: 13,
                   ),
                   maxLines: 2,
@@ -213,21 +225,21 @@ class ProductCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: colorScheme.surfaceVariant,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.timer_outlined,
                             size: 14,
-                            color: Colors.grey,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             '${product.preparationTime} min',
                             style: TextStyle(
-                              color: Colors.grey[600],
+                              color: colorScheme.onSurfaceVariant,
                               fontSize: 12,
                             ),
                           ),
@@ -237,10 +249,10 @@ class ProductCard extends StatelessWidget {
                     const Spacer(),
                     Text(
                       '\$${product.price}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ],
@@ -257,6 +269,9 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildDesktopLayout(
       BuildContext context, bool isSmallCard, bool isMediumCard) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -289,7 +304,7 @@ class ProductCard extends StatelessWidget {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: colorScheme.primary,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -297,14 +312,14 @@ class ProductCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.local_fire_department,
-                        color: Colors.white,
+                        color: colorScheme.onPrimary,
                         size: isMediumCard ? 14 : 16,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         'Best Seller',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                           fontSize: isMediumCard ? 10 : 12,
                           fontWeight: FontWeight.w500,
                         ),
@@ -319,11 +334,11 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(isMediumCard ? 6 : 8),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: theme.shadowColor.withOpacity(0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -343,6 +358,7 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: isMediumCard ? 10 : 12,
                         fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -365,6 +381,7 @@ class ProductCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: isSmallCard ? 16 : 18,
                           fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -393,7 +410,7 @@ class ProductCard extends StatelessWidget {
                 Text(
                   product.description,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: colorScheme.onSurface.withOpacity(0.7),
                     fontSize: isSmallCard ? 12 : 14,
                   ),
                   maxLines: 2,
@@ -408,7 +425,7 @@ class ProductCard extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: colorScheme.surfaceVariant,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -416,13 +433,13 @@ class ProductCard extends StatelessWidget {
                           Icon(
                             Icons.timer_outlined,
                             size: isSmallCard ? 14 : 16,
-                            color: Colors.grey,
+                            color: colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             '${product.preparationTime} min',
                             style: TextStyle(
-                              color: Colors.grey[600],
+                              color: colorScheme.onSurfaceVariant,
                               fontSize: isSmallCard ? 10 : 12,
                             ),
                           ),
@@ -435,7 +452,7 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: isSmallCard ? 18 : 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ],

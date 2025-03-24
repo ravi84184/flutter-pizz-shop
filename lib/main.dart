@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/cart_provider.dart';
 import 'providers/product_provider.dart';
+import 'providers/theme_provider.dart';
 import 'repositories/mock_product_repository.dart';
 import 'screens/home_screen.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,19 +25,22 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'Pizza Shop',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFFFF8A00),
-            primary: const Color(0xFFFF8A00),
-          ),
-          textTheme: GoogleFonts.poppinsTextTheme(),
-          useMaterial3: true,
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
         ),
-        home: const HomeScreen(),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) {
+          return MaterialApp(
+            title: 'Pizza Shop',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode:
+                themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }

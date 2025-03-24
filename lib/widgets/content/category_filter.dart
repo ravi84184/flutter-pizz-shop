@@ -14,16 +14,20 @@ class CategoryFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 4),
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
           child: Text(
             'Our Menu',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
+              color: colorScheme.onSurface,
             ),
           ),
         ),
@@ -59,46 +63,55 @@ class CategoryFilter extends StatelessWidget {
     String label,
     String icon,
   ) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final isSelected = categoryId == selectedCategoryId;
 
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: InkWell(
         onTap: () => onCategorySelected(categoryId),
-        borderRadius: BorderRadius.circular(50),
-        child: Container(
+        borderRadius: BorderRadius.circular(30),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
-            vertical: 6,
+            vertical: 2,
           ),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.orange : Colors.white,
-            borderRadius: BorderRadius.circular(50),
+            color:
+                isSelected ? colorScheme.primary : colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              color: isSelected ? Colors.orange : Colors.grey.shade200,
-              width: 1,
+              color:
+                  isSelected ? colorScheme.primary : colorScheme.outlineVariant,
+              width: isSelected ? 2 : 1,
             ),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
+              if (isSelected)
+                BoxShadow(
+                  color: colorScheme.primary.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
             ],
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 icon,
-                style: const TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(width: 8),
               Text(
                 label,
                 style: TextStyle(
+                  color: isSelected
+                      ? colorScheme.onPrimary
+                      : colorScheme.onSurfaceVariant,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                   fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: isSelected ? Colors.white : Colors.black87,
                 ),
               ),
             ],

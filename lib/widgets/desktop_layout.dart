@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/theme_provider.dart';
 import 'content/main_content.dart';
 import 'cart/cart_item_tile.dart';
 import 'desktop/sidebar.dart';
@@ -10,8 +11,11 @@ class DesktopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: colorScheme.background,
       body: Row(
         children: [
           const Sidebar(),
@@ -21,7 +25,7 @@ class DesktopLayout extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(20),
-                  color: Colors.white,
+                  color: colorScheme.surface,
                   child: Row(
                     children: [
                       Column(
@@ -30,16 +34,17 @@ class DesktopLayout extends StatelessWidget {
                           Text(
                             'Hello John',
                             style: TextStyle(
-                              color: Colors.grey[600],
+                              color: colorScheme.onSurface.withOpacity(0.7),
                               fontSize: 14,
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
+                          Text(
                             'Welcome Back',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
+                              color: colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -49,15 +54,18 @@ class DesktopLayout extends StatelessWidget {
                         width: 300,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.grey[100],
+                          color: colorScheme.surfaceVariant,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: 'Search',
+                            hintStyle: TextStyle(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                             prefixIcon: Icon(
                               Icons.search,
-                              color: Colors.grey[600],
+                              color: colorScheme.onSurfaceVariant,
                             ),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(
@@ -70,21 +78,37 @@ class DesktopLayout extends StatelessWidget {
                       const SizedBox(width: 20),
                       CircleAvatar(
                         radius: 20,
-                        backgroundColor: Colors.grey[200],
+                        backgroundColor: colorScheme.surfaceVariant,
                         backgroundImage: const NetworkImage(
                           'https://via.placeholder.com/40',
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         'John Smith',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(width: 20),
+                      Consumer<ThemeProvider>(
+                        builder: (context, themeProvider, _) => IconButton(
+                          icon: Icon(
+                            themeProvider.isDarkMode
+                                ? Icons.light_mode
+                                : Icons.dark_mode,
+                            color: colorScheme.onSurface,
+                          ),
+                          onPressed: () => themeProvider.toggleTheme(),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       IconButton(
-                        icon: const Icon(Icons.notifications_outlined),
+                        icon: Icon(
+                          Icons.notifications_outlined,
+                          color: colorScheme.onSurface,
+                        ),
                         onPressed: () {},
                       ),
                     ],
@@ -103,7 +127,7 @@ class DesktopLayout extends StatelessWidget {
             width: 400,
             margin: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -228,19 +252,20 @@ class DesktopLayout extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Order Menu',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: const Text(
+                        child: Text(
                           'See All',
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: colorScheme.primary,
                           ),
                         ),
                       ),
@@ -251,8 +276,13 @@ class DesktopLayout extends StatelessWidget {
                   child: Consumer<CartProvider>(
                     builder: (context, cart, _) {
                       if (cart.items.isEmpty) {
-                        return const Center(
-                          child: Text('Your cart is empty'),
+                        return Center(
+                          child: Text(
+                            'Your cart is empty',
+                            style: TextStyle(
+                              color: colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
                         );
                       }
                       return ListView.builder(
@@ -324,4 +354,4 @@ class DesktopLayout extends StatelessWidget {
       ),
     );
   }
-} 
+}
